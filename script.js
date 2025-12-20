@@ -496,15 +496,38 @@ window.addEventListener("hashchange", scrollToHashProduct);
 */
 function isProductAvailable(p) {
   if (!p) return true;
+
+  // ✅ Propiedad "available" (boolean / number / string)
   if (typeof p.available === "boolean") return p.available;
+  if (typeof p.available === "number") return p.available > 0;
+  if (typeof p.available === "string") {
+    const v = p.available.trim().toLowerCase();
+    if (["false","0","no","agotado","sin stock","sinstock","no disponible","nodisponible"].includes(v)) return false;
+    if (["true","1","si","sí","disponible","en stock","stock"].includes(v)) return true;
+  }
+
+  // ✅ Alternativas comunes
   if (typeof p.disponible === "boolean") return p.disponible;
+  if (typeof p.disponible === "number") return p.disponible > 0;
+  if (typeof p.disponible === "string") {
+    const v = p.disponible.trim().toLowerCase();
+    if (["false","0","no","agotado","sin stock","sinstock","no disponible","nodisponible"].includes(v)) return false;
+    if (["true","1","si","sí","disponible","en stock","stock"].includes(v)) return true;
+  }
+
+  // ✅ Stock numérico
   if (typeof p.stock === "number") return p.stock > 0;
   if (typeof p.cantidad === "number") return p.cantidad > 0;
+
+  // ✅ Texto de estado
   if (typeof p.status === "string") {
-    return !/(agotado|sin\s*stock|no\s*disponible)/i.test(p.status);
+    if (/(agotado|sin\s*stock|no\s*disponible)/i.test(p.status)) return false;
+    if (/(disponible|en\s*stock)/i.test(p.status)) return true;
   }
+
   return true; // por defecto: disponible
 }
+
 
 function getAvailabilityLabel(p) {
   return isProductAvailable(p) ? "DISPONIBLE" : "AGOTADO";
