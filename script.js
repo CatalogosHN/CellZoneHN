@@ -556,13 +556,16 @@ function shareProductWhatsApp(index) {
   });
 
   const message =
-    String(product.name || "") + "\n" +
-    availability + "\n" +
-    price + "\n\n" +
-    descLines.join("\n") + "\n\n" +
-    imageNames.join("\n");
+    String(product.name || "") + "
+" +
+    availability + "
+" +
+    price + "
 
-  const openWhatsAppText = () => {
+" +
+    descLines.join("
+");
+const openWhatsAppText = () => {
     const waLink = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
     window.open(waLink, "_blank");
   };
