@@ -555,17 +555,14 @@ function shareProductWhatsApp(index) {
     return waBaseNameFromUrl(img, ("imagen" + (i + 1) + ".jpg"));
   });
 
+  // ✅ Enviar SOLO la información del producto (sin listar nombres de imágenes en el texto)
   const message =
-    String(product.name || "") + "
-" +
-    availability + "
-" +
-    price + "
+    String(product.name || "") + "\n" +
+    availability + "\n" +
+    price + "\n\n" +
+    descLines.join("\n");
 
-" +
-    descLines.join("
-");
-const openWhatsAppText = () => {
+  const openWhatsAppText = () => {
     const waLink = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
     window.open(waLink, "_blank");
   };
